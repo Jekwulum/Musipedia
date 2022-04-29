@@ -5,6 +5,8 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.authtoken.models import Token
+from Api import models
 from Api.models import Album, Artist, Song
 from .serializers import (AlbumSerializer, ArtistSerializer,
                           SongSerializer, UserSerializer)
@@ -90,6 +92,13 @@ class UserCreateAV(generics.CreateAPIView):
 
     def get_queryset(self):
         return User.objects.all()
+
+    # def create(self, request, *args, **kwargs):
+    #     response = super().create(request, *args, **kwargs)
+    #     token = Token.objects.get(user=response.data)
+    #     data = {'status': 200,
+    #             'data': response.data,
+    #             'token': token}
 
 
 class UserListAV(generics.ListAPIView):
