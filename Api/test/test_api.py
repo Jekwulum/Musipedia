@@ -78,3 +78,36 @@ class TestArtist(APITestCase):
         self.assertEqual(data['full_name'], "Christian Blur")
         self.assertIn('artist_albums', data)
         self.assertIn('title', data['artist_albums'][0])
+
+    def test_artist_update(self):
+        data = {
+            "full_name": "Christian Blur",
+            "stage_name": "Chris-2",
+            "dob": "2003-09-10",
+            "record_label": "Quebec Int",
+            "albums": [
+                {
+                    "title": "album 10"
+                }
+            ],
+            "songs": [
+                {
+                    "title": "song 10"
+                }
+            ]
+        }
+
+        response = self.client.patch(
+            APITestUtils.get_artist_details_url(self.artist1.stage_name),
+            data=data,
+            format='json'
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+    def test_delete_artist(self):
+        response = self.client.delete(
+            APITestUtils.get_artist_details_url(self.artist1.stage_name)
+        )
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(response.data['message'], 'Deleted')
