@@ -29,9 +29,11 @@ class Artist(models.Model):
 
 class Album(models.Model):
     title = models.CharField(max_length=100)
-    artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name='artist_albums')
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
+
+    # relations
+    artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name='artist_albums')
 
     objects = models.Manager()
 
@@ -41,10 +43,12 @@ class Album(models.Model):
 
 class Song(models.Model):
     title = models.CharField(max_length=100)
-    artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name='artist_songs')
-    album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='album_songs')
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
+
+    # relations
+    artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name='artist_songs')
+    album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='album_songs')
 
     objects = models.Manager()
 

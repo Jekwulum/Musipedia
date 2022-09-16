@@ -1,15 +1,32 @@
 from django.http import Http404
 from django.contrib.auth.models import User
+from rest_framework.decorators import api_view
 from rest_framework import status, generics
-from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.authtoken.models import Token
-from Api import models
+from rest_framework_simplejwt.tokens import RefreshToken
+# from rest_framework.authtoken.models import Token
+# from Api import models
 from Api.models import Album, Artist, Song
 from .serializers import (AlbumSerializer, ArtistSerializer,
                           SongSerializer, UserSerializer)
+
+
+def get_tokens_for_user(user):
+    refresh = RefreshToken.for_user(user)
+
+    return {
+        'refresh': str(refresh),
+        'access': str(refresh.access_token)
+    }
+
+
+@api_view(['POST'])
+def logout_view(request):
+    if request.method == 'POST':
+        request.user.auth_token.delete()
+        return Response(data={'message': 'logout successful'}, status=status.HTTP_200_OK)
 
 
 class ArtistListAV(APIView):
@@ -87,18 +104,27 @@ class SongDetailAV(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 
-class UserCreateAV(generics.CreateAPIView):
-    serializer_class = UserSerializer
+class UserCreateAV(APIView):
 
-    def get_queryset(self):
-        return User.objects.all()
+    def post(self, request, *args, **kwargs):
+        serializer = UserSerializer(data=request.data)
 
-    # def create(self, request, *args, **kwargs):
-    #     response = super().create(request, *args, **kwargs)
-    #     token = Token.objects.get(user=response.data)
-    #     data = {'status': 200,
-    #             'data': response.data,
-    #             'token': token}
+        data = {}
+
+        if serializer.is_valid():
+            user = serializer.save()
+            data['response'] = "Registration Successful!"
+            data['username'] = user.username
+
+            # token = Token.objects.get(user=user).key
+            # data['token'] = token
+
+            data['token'] = get_tokens_for_user(user)
+
+        else:
+            data = serializer.errors
+
+        return Response(data)
 
 
 class UserListAV(generics.ListAPIView):
