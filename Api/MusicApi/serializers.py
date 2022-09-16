@@ -1,10 +1,10 @@
 from django.contrib.auth.models import User
+from django.db import transaction
 from rest_framework import serializers
 from Api.models import Album, Artist, Song
 
 
 class SongSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Song
         fields = '__all__'
@@ -22,9 +22,58 @@ class ArtistSerializer(serializers.ModelSerializer):
     artist_albums = AlbumSerializer(many=True, read_only=True)
     artist_songs = SongSerializer(many=True, read_only=True)
 
+    @transaction.atomic
+    def create(self, validated_data):
+        albums_data = self.initial_data.get('albums')
+        songs_data = self.initial_data.get('songs')
+
+        instance = super().create(validated_data)
+        if albums_data:
+            Album.objects.bulk_create([
+                Album(
+                    title=album['title'],
+                    artist_id=instance.id
+                ) for album in albums_data
+            ])
+        if songs_data:
+            Song.objects.bulk_create([
+                Song(
+                    title=song['title'],
+                    artist_id=instance.id
+                ) for song in songs_data
+            ])
+
+        instance = super().update(instance, validated_data)
+        instance.save()
+        return instance
+
     class Meta:
         model = Artist
         fields = '__all__'
+
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        albums_data = self.initial_data.get('albums')
+        songs_data = self.initial_data.get('songs')
+
+        if albums_data:
+            instance.albums.clear()  # delete existing data
+            for album in albums_data:
+                album_id = album.get("id")
+                if album_id:
+                    album_obj = Album.objects.get(id=album_id)
+                    album_obj.title = album.get("title")
+                    album_obj.save()
+                    instance.artist_albums.add(album_obj)
+                else:
+                    Album.objects.create(
+                        name=album.get("title"),
+                        artist_id=instance.id
+                    )
+
+        instance = super().update(instance, validated_data)
+        instance.save()
+        return instance
 
 
 class UserSerializer(serializers.ModelSerializer):

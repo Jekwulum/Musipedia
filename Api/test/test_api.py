@@ -1,3 +1,5 @@
+import json
+
 from django.urls import reverse
 from rest_framework.test import APITestCase, APIClient
 from Api.factories import (ArtistFactory, AlbumFactory)
@@ -47,7 +49,32 @@ class TestArtist(APITestCase):
         self.assertEqual(response.status_code, 200)
         data = response.data
         self.assertEqual(len(data), 4)
-        pprint(data[3]['artist_albums'])
+        # pprint(data[3]['artist_albums'])
         for artist in data:
             if artist['full_name'] == str(self.artist1.full_name):
                 self.assertEqual(artist['artist_albums'][0]['title'], str(self.album1.title))
+
+    def test_create_artist(self):
+        data = {
+            "full_name": "Christian Blur",
+            "record_label": "Quebec Int",
+            "stage_name": "Chris-o",
+            "dob": "2003-09-10",
+            "albums": [
+                {"title": "album 7"},
+                {"title": "album 9"}
+            ],
+            "songs": [{"title": "song 2"}]
+        }
+        response = self.client.post(
+            APITestUtils.get_artists_url(),
+            data=data,
+            format='json'
+        )
+        self.assertEqual(response.status_code, 201)
+        data = response.data
+        print("data: ")
+        pprint(data)
+        self.assertEqual(data['full_name'], "Christian Blur")
+        self.assertIn('artist_albums', data)
+        self.assertIn('title', data['artist_albums'][0])

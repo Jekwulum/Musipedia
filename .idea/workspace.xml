@@ -2,17 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7bfddd4b-8088-48fa-9c9a-e60af43400cc" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Api/factories.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Api/test/test_api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Musipedia.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Musipedia.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/MusicApi/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/Api/MusicApi/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/MusicApi/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/Api/MusicApi/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/MusicApi/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/Api/MusicApi/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Api/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/Api/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/test/test_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/Api/test/test_api.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Musipedia/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Musipedia/settings.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,6 +23,14 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="ProjectId" id="28F4trDibE87M0digHyWqSkNjl2" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />

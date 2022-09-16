@@ -48,7 +48,7 @@ class Song(models.Model):
 
     # relations
     artist = models.ForeignKey(Artist, on_delete=models.CASCADE, related_name='artist_songs')
-    album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='album_songs')
+    album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='album_songs', null=True, blank=True)
 
     objects = models.Manager()
 
