@@ -57,7 +57,7 @@ class ArtistSerializer(serializers.ModelSerializer):
         songs_data = self.initial_data.get('songs')
 
         if albums_data:
-            instance.albums.clear()  # delete existing data
+            # instance.artist_albums.clear()
             for album in albums_data:
                 album_id = album.get("id")
                 if album_id:
@@ -67,7 +67,22 @@ class ArtistSerializer(serializers.ModelSerializer):
                     instance.artist_albums.add(album_obj)
                 else:
                     Album.objects.create(
-                        name=album.get("title"),
+                        title=album.get("title"),
+                        artist_id=instance.id
+                    )
+
+        if songs_data:
+            # instance.artist_songs.clear()
+            for song in songs_data:
+                song_id = song.get("id")
+                if song_id:
+                    song_obj = Song.objects.get(id=song_id)
+                    song_obj.title = song.get("title")
+                    song_obj.save()
+                    instance.artist_songs.add(song_obj)
+                else:
+                    Song.objects.create(
+                        title=song.get("title"),
                         artist_id=instance.id
                     )
 
